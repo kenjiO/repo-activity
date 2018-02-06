@@ -1,0 +1,20 @@
+  {
+    "all": true,
+    "check-coverage": true,
+    "branches": 90,
+    "function": 90,
+    "lines": 90,
+    "statements": 90,
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "include": [
+      "src"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "require": [
+      "babel-core/register"
+    ]
+  }

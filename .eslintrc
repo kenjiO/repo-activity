@@ -1,0 +1,14 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "rules": {
+    "no-console": [
+      "error", { "allow": [ "info", "warn", "error" ] }
+    ]
+  }
+}
