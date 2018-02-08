@@ -1,13 +1,14 @@
 {
   "name": "repo-activity",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get the date the latest commit was made on a GitHub repo",
   "engines": {
     "node": ">=0.12.0"
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel --out-dir dist --ignore *.test.js src",
+    "build": "npm run clean && babel --out-dir dist --ignore *.test.js src",
+    "clean": "rimraf dist",
     "codecov": "cat ./coverage/lcov.info | codecov",
     "coverage": "cross-env NODE_ENV=test nyc mocha src/**/*.test.js",
     "lint": "eslint src",
@@ -30,7 +31,11 @@
     "url": "https://github.com/kenjio/repo-activity/issues"
   },
   "homepage": "https://github.com/kenjio/repo-activity#readme",
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
   "devDependencies": {
+    "axios-mock-adapter": "^1.13.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-preset-env": "^1.6.1",
@@ -41,6 +46,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^5.0.0",
-    "nyc": "^11.4.1"
+    "nyc": "^11.4.1",
+    "rimraf": "^2.6.2"
   }
 }
