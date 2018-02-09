@@ -1,5 +1,8 @@
 src
 .babelrc
 .nycrc
+.eslintrc
 .nyc_output
 coverage
+.vscode
+.travis.yml
