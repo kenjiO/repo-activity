@@ -1,6 +1,6 @@
 {
   "name": "repo-activity",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Get the date the latest commit was made on a GitHub repo",
   "engines": {
     "node": ">=0.12.0"
