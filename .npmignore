@@ -6,3 +6,4 @@ src
 coverage
 .vscode
 .travis.yml
+.codecov.yml
