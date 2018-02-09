@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import getLastCommitDate from './index';
 import { API_BASE } from './constants';
 
-const axoisMock = new MockAdapter(axios);
+const axoisMock = new MockAdapter(axios, { delayResponse: 20 });
 
 describe('getLastCommitDate', () => {
   beforeEach(() => {
@@ -98,6 +98,53 @@ describe('getLastCommitDate', () => {
       });
   });
 
+  it('Errors when the response is 404', () => {
+    axoisMock.onGet(`${API_BASE}/userX/repoY/commits`).reply(404, { message: 'Not Found' });
+
+    return getLastCommitDate('userX/repoY').then(
+      () => Promise.reject(new Error('promise should have rejected due to unexpected response')),
+      (error) => {
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('404 Not Found');
+      },
+    );
+  });
+
+  it('Errors when the response is 403', () => {
+    axoisMock.onGet(`${API_BASE}/userX/repoY/commits`).reply(403, { message: 'Forbidden' });
+
+    return getLastCommitDate('userX/repoY').then(
+      () => Promise.reject(new Error('promise should have rejected due to unexpected response')),
+      (error) => {
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('403 Forbidden');
+      },
+    );
+  });
+
+  it('Errors when the response is 500', () => {
+    axoisMock.onGet(`${API_BASE}/userX/repoY/commits`).reply(500, { message: 'Server Error' });
+
+    return getLastCommitDate('userX/repoY').then(
+      () => Promise.reject(new Error('promise should have rejected due to unexpected response')),
+      (error) => {
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('500 Server Error');
+      },
+    );
+  });
+
+  it('Errors when the response is not an array', () => {
+    axoisMock.onGet(`${API_BASE}/userX/repoY/commits`).reply(200, {});
+
+    return getLastCommitDate('userX/repoY').then(
+      () => Promise.reject(new Error('promise should have rejected due to unexpected response')),
+      (error) => {
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('Data received from Github came in unexpected format');
+      },
+    );
+  });
 
   it('Errors when there is no commit property in the response', () => {
     axoisMock.onGet(`${API_BASE}/userX/repoY/commits`).reply(200, [
@@ -134,6 +181,17 @@ describe('getLastCommitDate', () => {
       (error) => {
         expect(error).to.be.an('error');
         expect(error.message).to.eql('Data received from Github came in unexpected format');
+      },
+    );
+  });
+
+  it('Handles network timeouts ', () => {
+    axoisMock.onAny().timeout();
+    return getLastCommitDate('userX/repoY').then(
+      () => Promise.reject(new Error('promise should have rejected due to network error')),
+      (error) => {
+        expect(error).to.be.an('error');
+        expect(error.message).to.eql('timeout of 0ms exceeded');
       },
     );
   });
