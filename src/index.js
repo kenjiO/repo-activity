@@ -37,7 +37,7 @@ module.exports = (repo) => {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        throw new Error('A request was made but no response was received');
+        throw new Error(`No response was received from ${url}`);
       }
       // Something happened in setting up the request that triggered an Error
       throw new Error(error.message);
